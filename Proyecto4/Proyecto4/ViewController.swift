@@ -23,7 +23,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let url = URL(string: "https://" + websites[0])!
+        let url = URL(string: "https://" + websites[1])!
         webView.load(URLRequest(url: url))
         webView.allowsBackForwardNavigationGestures = true
         
@@ -34,23 +34,23 @@ class ViewController: UIViewController, WKNavigationDelegate {
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let refresh = UIBarButtonItem(barButtonSystemItem: .refresh, target: webView, action: #selector(webView.reload))
         
-        toolbarItems = [progressButton ,spacer, refresh]
+        toolbarItems = [progressButton, spacer, refresh]
         navigationController?.isToolbarHidden = false
         
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
     }
     
-    @objc func openTapped(){
+    @objc func openTapped() {
         let ac = UIAlertController(title: "Abrir página...", message: nil, preferredStyle: .actionSheet)
         for website in websites{
             ac.addAction(UIAlertAction(title: website, style: .default, handler: openPage))
         }
         ac.addAction(UIAlertAction(title: "Cancelar", style: .cancel))
-            ac.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
-            present(ac,animated: true)
+        ac.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
+        present(ac,animated: true)
         }
     
-    func openPage(action: UIAlertAction){
+    func openPage(action: UIAlertAction) {
         let url = URL(string: "https//" + action.title!)!
         webView.load(URLRequest(url: url))
     }
@@ -60,7 +60,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == "estimatedProgress"{
+        if keyPath == "estimatedProgress" {
             progressView.progress = Float(webView.estimatedProgress)
         }
     }
@@ -68,9 +68,9 @@ class ViewController: UIViewController, WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         let url = navigationAction.request.url
         
-        if let host = url!.host{
-            for website in websites{
-                if host.range(of: website) != nil{
+        if let host = url!.host {
+            for website in websites {
+                if host.range(of: website) != nil {
                     decisionHandler(.allow)
                     return
                 }
